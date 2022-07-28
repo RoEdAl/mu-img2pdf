@@ -1,6 +1,7 @@
 ###! img2pdf -- Copyright (c) 2022-present, Edmunt Pienkowsky -- license (MIT)###
 
 String::paddingLeft = (paddingValue) -> String(paddingValue + this).slice(-paddingValue.length)
+String::endsWith = (suffix) -> this.indexOf(suffix, this.length - suffix.length) != -1
 
 bye = (str = "Bye from #{ScriptPath}") -> throw str
 
@@ -16,15 +17,15 @@ getPdfId = (pdf, s1, s2) ->
 	docId.push pdf.newString(s2)
 	docId
 
+capitalizeFirstLetter = (s) -> s.charAt(0).toUpperCase() + s.slice(1)
+
 getPdfInfo = (pdf, mtd) ->
 	info = {}
-	info.Author = pdf.newString(mtd.author) if 'author' of mtd
-	info.Title = pdf.newString(mtd.title) if 'title' of mtd
-	info.Producer = pdf.newString(mtd.producer) if 'producer' of mtd
-	info.Subject = pdf.newString(mtd.subject) if 'subject' of mtd
-	info.Creator = pdf.newString(mtd.creator) if 'creator' of mtd
-	info.CreationDate = pdf.newString(toPdfDate(mtd.creationDate)) if 'creationDate' of mtd
-	info.ModDate = pdf.newString(toPdfDate(mtd.modDate)) if 'modDate' of mtd
+	for p in ['author', 'title', 'producer', 'subject', 'creator', 'creationDate', 'modDate']
+		continue unless p of mtd
+		propName = capitalizeFirstLetter p
+		propVal = mtd[p]
+		info[propName] = if p.endsWith 'Date' then pdf.newString toPdfDate(propVal) else pdf.newString propVal
 	pdf.addObject info
 
 getContents = (pdf, lines...) ->
@@ -49,26 +50,21 @@ addImgPage = (pdf, img) ->
 			Im0: imageObj
 	contents = getContents pdf, "q #{pgWidth} 0 0 #{pgHeight} 0 0 cm /Im0 Do Q"
 	pdf.addObject
-		Type: pdf.newName('Page')
+		Type: 'Page'
 		MediaBox: [0,0,pgWidth,pgHeight]
 		Contents: contents
 		Resources: resources
 	
 copyPdfPage = (dst, src, pageNumber, dstFromSrc) ->
 	srcPage = src.findPage(pageNumber)
-	dstPage = dst.newDictionary()
-	dstPage.Type = dst.newName("Page")
-	dstPage.MediaBox = dstFromSrc.graftObject(srcPage.MediaBox) if 'MediaBox' of srcPage
-	dstPage.Rotate = dstFromSrc.graftObject(srcPage.Rotate) if 'Rotate' of srcPage
-	dstPage.Resources = dstFromSrc.graftObject(srcPage.Resources) if 'Resources' of srcPage
-	dstPage.Contents = dstFromSrc.graftObject(srcPage.Contents) if 'Contents' of srcPage
+	dstPage = dstFromSrc.graftObject(srcPage)
 	dst.addObject dstPage
 	
 copyPdfPages = (pdf, img) ->
 	src = new PDFDocument img.path
 	dstFromSrc = pdf.newGraftMap()
 	n = src.countPages()
-	yield copyPdfPage(pdf, src, i, dstFromSrc) for i in [0..n-1]
+	yield copyPdfPage pdf, src, i, dstFromSrc for i in [0..n-1]
 	
 getPdfPages = (pdf, img) ->
 	if img.isPdf ? false
@@ -110,12 +106,12 @@ for img from getImgDesc cfg.src
 	pdf.insertPage -1, page for page from getPdfPages pdf, img
 
 trailer = pdf.getTrailer()
-if cfg.Info?
+if cfg.info?
 	trailer.Info = getPdfInfo pdf, cfg.info
 else
 	delete trailer.Info
 
-if cfg.id? and Array.isArray(cfg.id) and cfg.id.length = 2
+if cfg.id? and Array.isArray(cfg.id) and cfg.id.length == 2
 	trailer.ID = getPdfId pdf, cfg.id...
 else
 	delete trailer.ID
