@@ -21,6 +21,7 @@ Use it with [`mutool run`](//mupdf.com/docs/manual-mutool-run.html) from [MuPDF]
 3. Run `npm run build` (or `npm run build:dev`)
    
    This command generates `img2pdf.js` script in `public` subfolder.
+   It is minified by *WebPack* so rather not human readable.
    
 # Usage
 
@@ -30,7 +31,7 @@ Example configuration file you can find [here](cfg-example.json).
 
 After preparing configuration file run `mutool`:
 ```sh
-mutool run img2pdf.sh cfg.json
+mutool run img2pdf.js cfg.json
 ```
 
 # Links
@@ -39,3 +40,4 @@ mutool run img2pdf.sh cfg.json
 * [MuPDF](//mupdf.com/index.html)
 * [MuPDF at GitHub](//github.com/ArtifexSoftware/mupdf)
 * [CoffeeScript](//coffeescript.org/)
+* [WebPack](//webpack.js.org/)
