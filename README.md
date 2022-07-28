@@ -1,10 +1,10 @@
-# img2pdf.coffee
+# `img2pdf.coffee`
 
-This is a CoffeScript (JavaScript) whitch creates PDF from image files (JPEG, PNG) without reencoding.
-It was inspired by [img2pdf](https://gitlab.mister-muffin.de/josch/img2pdf) Python script.
-Use it with `mutool run` from [MuPdf](https://mupdf.com/) toolkit.
+This is a [*CoffeeScript*](//coffeescript.org/) whitch creates PDF from image files (JPEG, PNG) without reencoding.
+It was inspired by [img2pdf](//gitlab.mister-muffin.de/josch/img2pdf) Python script.
+Use it with [`mutool run`](//mupdf.com/docs/manual-mutool-run.html) from [MuPDF](//mupdf.com/) toolkit.
 
-`mutool` accepts only scripts written in JavaScript (ES5). You must build it from [img2pdf.coffee](img2pdf.coffee) first.
+`mutool` accepts only scripts written in JavaScript (ES5) so you must build one from [`img2pdf.coffee`](img2pdf.coffee) first.
 
 # Requirements
 
@@ -32,3 +32,10 @@ After preparing configuration file run `mutool`:
 ```sh
 mutool run img2pdf.sh cfg.json
 ```
+
+# Links
+
+* [img2pdf](//gitlab.mister-muffin.de/josch/img2pdf)
+* [MuPDF](//mupdf.com/index.html)
+* [MuPDF at GitHub](//github.com/ArtifexSoftware/mupdf)
+* [CoffeeScript](//coffeescript.org/)
