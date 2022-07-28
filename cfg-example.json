@@ -1,0 +1,18 @@
+{
+	"src": [
+		"front.jpg",
+		{"img": "00-01.jpg", "resolution": 1200},
+		{"pdf": "test2.pdf"},
+		{"pdf": "test1.pdf"},
+		{"img": "C:\\Users\\Roman\\Music\\Bach -  Goldberg-Variationen - Italienisches Konzert - (Trevor Pinnock) - 2006\\covers\\02-03.jpg"}
+	],
+	"output": "images.pdf",
+	"outputOpts": ["sanitize"],
+	"info": {
+		"author": "Author",
+		"producer": "mu-img2pdf",
+		"creationDate": [],
+		"modDate": [],
+		"title": "This is my super complex title"
+	}
+}

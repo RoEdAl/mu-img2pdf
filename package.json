@@ -1,0 +1,24 @@
+{
+  "name": "mu-img2pdf",
+  "version": "1.0.0",
+  "main": "img2pdf.coffee",
+  "private": true,
+  "scripts": {
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development"
+  },
+  "keywords": [
+    "MuPDF",
+    "CoffeeScript"
+  ],
+  "author": "Edmunt Pienkowsky",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
+    "coffee-loader": "^4.0.0",
+    "coffeescript": "^2.7.0",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
