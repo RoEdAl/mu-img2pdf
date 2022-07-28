@@ -32,7 +32,7 @@ config =
 	node: false
 	output:
 		path: __dirname + '/public'
-		filename: 'jmg2pdf.js'
+		filename: 'img2pdf.js'
 		chunkFormat: 'commonjs' # must be specified when target == es5
 	optimization:
 		minimize: false
