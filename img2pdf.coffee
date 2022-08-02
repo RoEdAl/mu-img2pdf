@@ -1,4 +1,4 @@
-###! img2pdf -- Copyright (c) 2022-present, Edmunt Pienkowsky -- license (MIT)###
+###! mu-img2pdf -- Copyright (c) 2022-present, Edmunt Pienkowsky -- license (MIT): https://github.com/RoEdAl/mu-img2pdf ###
 
 String::paddingLeft = (paddingValue) -> String(paddingValue + this).slice(-paddingValue.length)
 String::endsWith = (suffix) -> this.indexOf(suffix, this.length - suffix.length) != -1
