@@ -31,12 +31,15 @@ Configuration is described in **JSON** format.
 Example:
 ```json
 {
+	"tmpDocPath": "c:\\temp\\~img2pdf-doc.pdf",
 	"src": [
 		"front.jpg",
-		{"img": "00-01.jpg", "resolution": 1200},
-		{"pdf": "test2.pdf"},
-		{"pdf": "test1.pdf"},
-		{"img": "02-03.jp2", "resolutionX": 300, "resolutionY": 400}
+		{"img": "img.jpg", "resolution": 1200},
+		{"pdf": "pdf2.pdf"},
+		{"doc": "svg1.svg", "scaleX": 5, "scaleY": 10},
+		{"pdf": "pdf1.pdf"},
+		{"img": ["img.jp2", "img.png"], "resolutionX": 300, "resolutionY": 400},
+		{"doc": ["svg2.svg", "svg3.svg"], "scale": 5},
 	],
 	"output": "images.pdf",
 	"outputOpts": ["sanitize"],
@@ -49,7 +52,10 @@ Example:
 	}
 }
 ```
-Empty array `[]` for `info.creationDate` and `info.modDate` means *current timestamp*.
+`tmpDocPath` element is **mandatory** if you want to import/convert SVG documents.
+It is a path to temporary PDF document with rendered SVG document.
+
+Empty array `[]` in `info.creationDate` and `info.modDate` elements means *current timestamp*.
 
 After preparing configuration file run `mutool`:
 ```sh
