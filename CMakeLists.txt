@@ -1,0 +1,59 @@
+#
+# mu-img2pdf
+#
+
+FIND_PROGRAM(NPM_BIN "npm")
+IF(NOT NPM_BIN)
+	MESSAGE(FATAL_ERROR "npm utility not found")
+ENDIF()
+
+IF(WIN32)
+	CMAKE_PATH(HAS_EXTENSION NPM_BIN NPM_HAS_EXT)
+	IF(NOT NPM_HAS_EXT)
+		CMAKE_PATH(REPLACE_EXTENSION NPM_BIN ".cmd")
+	ENDIF()
+ENDIF()
+
+ADD_EXECUTABLE(NPM IMPORTED)
+SET_PROPERTY(TARGET NPM PROPERTY IMPORTED_LOCATION ${NPM_BIN})
+
+# initialize package
+
+SET(PACKAGE_FILES package.json webpack.config.coffee img2pdf.coffee)
+FOREACH(F IN LISTS PACKAGE_FILES)
+	IF(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/${F})
+		CONTINUE()
+	ENDIF()
+	FILE(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/${F} ${CMAKE_CURRENT_BINARY_DIR}/${F} COPY_ON_ERROR)
+ENDFOREACH()
+
+EXECUTE_PROCESS(
+	COMMAND ${NPM_BIN} --quiet --no-progress --no-color install
+	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+	COMMAND_ERROR_IS_FATAL ANY
+)
+
+# build
+
+ADD_CUSTOM_COMMAND( 
+	OUTPUT public/img2pdf.js public/img2pdf.js.LICENSE.txt
+	MAIN_DEPENDENCY img2pdf.coffee
+	COMMAND NPM --loglevel error --no-color run build
+	COMMENT "Creating JS script"
+	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+ADD_CUSTOM_TARGET(img2pdf-js
+	SOURCES package.json webpack.config.coffee img2pdf.coffee
+	DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/public/img2pdf.js
+)
+
+SET_PROPERTY(TARGET img2pdf-js PROPERTY FOLDER "img2pdf")
+
+INSTALL(
+	FILES
+		${CMAKE_CURRENT_BINARY_DIR}/public/img2pdf.js
+		${CMAKE_CURRENT_BINARY_DIR}/public/img2pdf.js.LICENSE.txt
+	DESTINATION img2pdf
+	COMPONENT img2pdf
+)
