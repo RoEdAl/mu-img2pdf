@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "img2pdf.coffee",
   "private": true,
-  "scripts": {
-    "build": "webpack --mode production",
-    "build:dev": "webpack --mode development"
-  },
+    "scripts": {
+        "build": "webpack --mode production --infrastructure-logging-level error --stats errors-only",
+        "build:dev": "webpack --mode development --infrastructure-logging-level warn --stats minimal"
+    },
   "keywords": [
     "MuPDF",
     "CoffeeScript"
