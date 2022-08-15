@@ -112,8 +112,8 @@ getImgResolution = (img) ->
 getDocScale = (doc) ->
 	r = {}
 	r.scaleX = r.scaleY = doc.scale if 'scale' of doc
-	r.scaleX = doc.scaleX if 'scaleX' of img
-	r.scaleY = doc.scaleY if 'scaleY' of img
+	r.scaleX = doc.scaleX if 'scaleX' of doc
+	r.scaleY = doc.scaleY if 'scaleY' of doc
 	r
 
 getImgDesc = (img) ->
