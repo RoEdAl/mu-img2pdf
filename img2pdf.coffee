@@ -60,12 +60,12 @@ getImgPage = (pdf, img) ->
 		MediaBox: [0,0,pgWidth,pgHeight]
 		Contents: contents
 		Resources: resources
-	
+
 copyPdfPage = (dst, src, pageNumber, dstFromSrc) ->
 	srcPage = src.findPage pageNumber
 	dstPage = dstFromSrc.graftObject srcPage
 	dst.addObject dstPage
-	
+
 copyPdfPages = (dst, img) ->
 	src = new PDFDocument img.path
 	dstFromSrc = dst.newGraftMap()
@@ -95,7 +95,7 @@ copyDocPages = (pdf, tmpDocPath, doc) ->
 	finally
 		docWriter.close()
 	yield page for page from copyPdfPages pdf, {path: tmpDocPath}
-	
+
 getPdfPages = (pdf, tmpDocPath, img) ->
 	switch img.type ? 'img'
 		when 'pdf' then yield page for page from copyPdfPages pdf, img
@@ -123,19 +123,19 @@ getImgDesc = (img) ->
 			switch
 				when Array.isArray(img)
 					for i in img
-						yield innerImg for innerImg from getImgDesc(i)				
+						yield innerImg for innerImg from getImgDesc(i)
 				when 'img' of img
-					imgRes = getImgResolution(img)
 					docType = type: 'img'
+					imgRes = getImgResolution(img)
 					yield {imgRes..., innerImg..., docType...} for innerImg from getImgDesc(img.img)
 				when 'pdf' of img
 					docType = type: 'pdf'
 					yield {innerImg..., docType...} for innerImg from getImgDesc(img.pdf)
 				when 'doc' of img
-					docScale = getDocScale(img)
 					docType = type: 'doc'
+					docScale = getDocScale(img)
 					yield {docScale..., innerImg..., docType...} for innerImg from getImgDesc(img.doc)
-	
+
 bye 'No configuration file' unless scriptArgs.length > 0
 cfg = JSON.parse read(scriptArgs[0])
 bye 'Empty configuration' unless cfg
